@@ -31,6 +31,7 @@ def upload(request):
                 img = np.expand_dims(img, axis=0)
                 result = classifier.predict_classes(img)
                 value=result[0]
+
             except:
                 print("exception occur")
             exp=Experiment(image=im,value=value)
