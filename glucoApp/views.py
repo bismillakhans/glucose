@@ -32,6 +32,7 @@ def upload(request):
                 result = classifier.predict_classes(img)
                 value=result[0]
 
+
             except:
                 print("exception occur")
             exp=Experiment(image=im,value=value)
@@ -57,8 +58,8 @@ def check_value_change(request,pk):
     # initialize the data dictionary to be returned by the request
     data = {"success": False}
     try:
-        single_exp = SomeModel.objects.get(foo='bar',is_confirmed=False)
-    except SomeModel.DoesNotExist:
+        single_exp = Experiment.objects.get(id=pk,is_confirmed=False)
+    except Experiment.DoesNotExist:
         single_exp = None
     # check to see if this is a post request
     if request.method == "POST":
