@@ -4,8 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 from django.shortcuts import render
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.preprocessing import image
+# from tensorflow.keras.models import load_model
 import os
 # Create your views here.
 from .models import Experiment
@@ -26,11 +26,12 @@ def upload(request):
 
             im = request.FILES["image"]
             try:
-                classifier = load_model(MODEL_PATH)
-                img = image.load_img(im, target_size=(112, 112))
-                img = np.expand_dims(img, axis=0)
-                result = classifier.predict_classes(img)
-                value=result[0]
+                # classifier = load_model(MODEL_PATH)
+                # img = image.load_img(im, target_size=(112, 112))
+                # img = np.expand_dims(img, axis=0)
+                # result = classifier.predict_classes(img)
+                # value=result[0]
+                value=8
 
 
             except:
