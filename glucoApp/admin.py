@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Experiment
+from glucoApp.models import Experiment
 
 
 class ExperimentModalAdmin(admin.ModelAdmin):

@@ -13,3 +13,4 @@ tensorflow==2.1.0
 numpy
 pillow
 python-decouple
+psycopg2-binary

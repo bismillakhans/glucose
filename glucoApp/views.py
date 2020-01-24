@@ -8,7 +8,7 @@ from django.shortcuts import render
 # from tensorflow.keras.models import load_model
 import os
 # Create your views here.
-from .models import Experiment
+from glucoApp.models import Experiment
 
 MODEL_PATH = "{base_path}/my_model.h5".format(
 	base_path=os.path.abspath(os.path.dirname(__file__)))
