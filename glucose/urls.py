@@ -18,11 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from glucoApp.views import upload, check_value_change
+from glucoApp.views import upload, check_value_change, index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('create/', upload,name="create"),
+    path('', index,name="index"),
     path('<pk>/change/', check_value_change,name="change"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

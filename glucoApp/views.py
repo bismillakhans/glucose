@@ -1,7 +1,7 @@
 # import random
 import numpy as np
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from django.shortcuts import render
 # from tensorflow.keras.preprocessing import image
@@ -54,6 +54,9 @@ def upload(request):
     # return a JSON response
     return JsonResponse(data,status=201)
 
+
+def index(request):
+    return HttpResponse("hello")
 
 @csrf_exempt
 def check_value_change(request,pk):
