@@ -20,6 +20,7 @@ def upload(request):
 
     # check to see if this is a post request
     if request.method == "POST":
+        print(MODEL_PATH)
         # check to see if an image was uploaded
         if request.FILES.get("image", None) is not None:
             # grab the uploaded image
