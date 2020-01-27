@@ -31,7 +31,7 @@ def upload(request):
                 img = image.load_img(im, target_size=(112, 112))
                 img = np.expand_dims(img, axis=0)
                 result = classifier.predict_classes(img)
-                value=result[0]
+                value=int(result[0])
 
 
 
