@@ -4,14 +4,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 
 from django.shortcuts import render
-# from tensorflow.keras.preprocessing import image
-# from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.models import load_model
 import os
 # Create your views here.
 from glucoApp.models import Experiment
 
 MODEL_PATH = "{base_path}/my_model.h5".format(
-	base_path=os.path.abspath(os.path.dirname(__file__)))
+	base_path=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 @csrf_exempt
 def upload(request):
@@ -27,12 +27,12 @@ def upload(request):
 
             im = request.FILES["image"]
             try:
-                # classifier = load_model(MODEL_PATH)
-                # img = image.load_img(im, target_size=(112, 112))
-                # img = np.expand_dims(img, axis=0)
-                # result = classifier.predict_classes(img)
-                # value=result[0]
-                value=8
+                classifier = load_model(MODEL_PATH)
+                img = image.load_img(im, target_size=(112, 112))
+                img = np.expand_dims(img, axis=0)
+                result = classifier.predict_classes(img)
+                value=result[0]
+
 
 
             except:
@@ -56,6 +56,7 @@ def upload(request):
 
 
 def index(request):
+    print(MODEL_PATH)
     return HttpResponse("hello")
 
 @csrf_exempt
