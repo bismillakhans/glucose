@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'glucoApp',
 ]
 
@@ -80,8 +81,8 @@ DATABASES = {
         "NAME": config("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": config("SQL_USER",default= "user"),
         "PASSWORD": config("SQL_PASSWORD", default="password"),
-        "HOST": config("SQL_HOST", default="localhost"),
-        "PORT": config("SQL_PORT",default= "5432"),
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
