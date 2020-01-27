@@ -35,8 +35,10 @@ def upload(request):
 
 
 
+
             except:
                 print("exception occur")
+                return JsonResponse(data, status=500)
             exp=Experiment(image=im,value=value)
             exp.save()
 
@@ -66,7 +68,9 @@ def check_value_change(request,pk):
     try:
         single_exp = Experiment.objects.get(id=pk,is_confirmed=False)
     except Experiment.DoesNotExist:
-        single_exp = None
+        data['error']="Not exist"
+
+        return JsonResponse(data,status=404)
     # check to see if this is a post request
     if request.method == "POST":
         # check to see if an image was uploaded
@@ -75,8 +79,7 @@ def check_value_change(request,pk):
         if url is None:
                 data["error"] = "No value provided."
                 single_exp.is_confirmed=True
-                single_exp.save()
-                return JsonResponse(data)
+
 
         else:
             single_exp.value = request.POST.get("value", None)
