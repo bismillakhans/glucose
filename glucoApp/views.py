@@ -1,14 +1,18 @@
 # import random
+from wsgiref.util import FileWrapper
+from zipfile import ZipFile
+
 import numpy as np
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 
-from django.shortcuts import render
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import load_model
 import os
 # Create your views here.
 from glucoApp.models import Experiment
+
 
 MODEL_PATH = "{base_path}/my_model.h5".format(
 	base_path=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -62,7 +66,7 @@ def index(request):
     return HttpResponse("hello")
 
 @csrf_exempt
-def check_value_change(request,pk):
+def     check_value_change(request,pk):
     # initialize the data dictionary to be returned by the request
     data = {"success": False}
     try:
@@ -100,3 +104,24 @@ def check_value_change(request,pk):
 
     # return a JSON response
     return JsonResponse(data,status=201)
+
+
+
+def download_image(request):
+    exp_images=Experiment.objects.all()
+    with ZipFile('export.zip', 'w') as export_zip:
+        for exp_image in exp_images:
+            exp_image_url = exp_image.image.url
+
+            image_path = settings.MEDIA_ROOT+ exp_image_url[11:]
+            image_name="{0}_{1}.jpg".format(exp_image.id,exp_image.value)
+            # Get your file name here.
+            export_zip.write(image_path, image_name)
+
+    wrapper = FileWrapper(open('export.zip', 'rb'))
+    content_type = 'application/zip'
+    content_disposition = 'attachment; filename=export.zip'
+
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Disposition'] = content_disposition
+    return response

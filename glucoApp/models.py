@@ -11,15 +11,15 @@ def get_obs_upload_path(instance, filename):
         h = "00"
     else:
         h = "12"
-    return '%s/%s' % (today.strftime('%Y%m%d')+ h, filename)
+    return '%s/%s' % (today.strftime('%Y%m%d') + h, filename)
+
+
 # Create your models here.
 class Experiment(models.Model):
-    image=models.ImageField("Image",null=True,blank=True,upload_to=get_obs_upload_path)
-    value=models.CharField("Value",null=True,blank=True,max_length=10)
-    is_confirmed=models.BooleanField("Confirm",default=False)
-    date_added=models.DateTimeField(auto_now_add=True)
-
-
+    image = models.ImageField("Image", null=True, blank=True, upload_to=get_obs_upload_path)
+    value = models.CharField("Value", null=True, blank=True, max_length=10)
+    is_confirmed = models.BooleanField("Confirm", default=False)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     def to_json(self):
         return {
@@ -29,6 +29,7 @@ class Experiment(models.Model):
             'date_added': self.date_added
 
         }
+
 
 @receiver(post_delete, sender=Experiment)
 def submission_delete(sender, instance, **kwargs):
