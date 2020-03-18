@@ -3,6 +3,7 @@ from wsgiref.util import FileWrapper
 from zipfile import ZipFile
 
 import numpy as np
+import requests
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
@@ -109,15 +110,19 @@ def     check_value_change(request,pk):
 
 def download_image(request):
     exp_images=Experiment.objects.all()
-    with ZipFile('export.zip', 'w') as export_zip:
-        for exp_image in exp_images:
-            exp_image_url = exp_image.image.url
+    try:
+        with ZipFile('export.zip', 'w') as export_zip:
+            for exp_image in exp_images:
+                exp_image_url = exp_image.image.url
+                r = requests.get(exp_image_url, timeout=60)
+                # image_path = settings.MEDIA_ROOT+ exp_image_url[11:]
 
-            # image_path = settings.MEDIA_ROOT+ exp_image_url[11:]
+                image_name="{0}_{1}.jpg".format(exp_image.id,exp_image.value)
+                # Get your file name here.
+                export_zip.write(r.content, image_name)
+    except:
+        print("error")
 
-            image_name="{0}_{1}.jpg".format(exp_image.id,exp_image.value)
-            # Get your file name here.
-            export_zip.write(exp_image_url, image_name)
 
     wrapper = FileWrapper(open('export.zip', 'rb'))
     content_type = 'application/zip'
