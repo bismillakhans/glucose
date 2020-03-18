@@ -113,10 +113,11 @@ def download_image(request):
         for exp_image in exp_images:
             exp_image_url = exp_image.image.url
 
-            image_path = settings.MEDIA_ROOT+ exp_image_url[11:]
+            # image_path = settings.MEDIA_ROOT+ exp_image_url[11:]
+
             image_name="{0}_{1}.jpg".format(exp_image.id,exp_image.value)
             # Get your file name here.
-            export_zip.write(image_path, image_name)
+            export_zip.write(exp_image_url, image_name)
 
     wrapper = FileWrapper(open('export.zip', 'rb'))
     content_type = 'application/zip'
