@@ -2,20 +2,23 @@
 from wsgiref.util import FileWrapper
 from zipfile import ZipFile
 
-import numpy as np
+
 import requests
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
+import imageio
+from skimage.color import rgb2hsv, rgb2lab, rgb2ycbcr
+# from skimage.transform import resize
+import numpy as np
+import cv2
 
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import load_model
 import os
 # Create your views here.
 from glucoApp.models import Experiment
 
 
-MODEL_PATH = "{base_path}/my_model.h5".format(
+MODEL_PATH = "{base_path}/new_model.h5".format(
 	base_path=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 @csrf_exempt
@@ -32,11 +35,29 @@ def upload(request):
 
             im = request.FILES["image"]
             try:
-                classifier = load_model(MODEL_PATH)
-                img = image.load_img(im, target_size=(112, 112))
-                img = np.expand_dims(img, axis=0)
-                result = classifier.predict_classes(img)
-                value=int(result[0])
+                
+                datainp1=list()
+		datainp2=list()
+		datainp3=list()
+		inp=imageio.imread(im)
+		inp = cv2.resize(inp,(112, 112), interpolation = cv2.INTER_CUBIC)
+		#inp_rgb=resize(inp_rgb,224,224)
+		inp1=rgb2hsv(inp) 
+		inp2=rgb2lab(inp)
+		inp3=rgb2ycbcr(inp)
+
+		datainp1.append(inp1)
+		datainp2.append(inp2)
+		datainp3.append(inp3)
+
+		datainp1 = np.array(datainp1)
+		datainp2 = np.array(datainp2)
+		datainp3 = np.array(datainp3)
+
+		preds = model.predict([datainp1,datainp2,datainp3])
+
+		y_classes = preds.argmax(axis=-1) 
+		value=y_classes[0]
 
 
 
