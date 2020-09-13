@@ -2,6 +2,7 @@
 from wsgiref.util import FileWrapper
 from zipfile import ZipFile
 
+from tensorflow.keras.models import load_model
 
 import requests
 from django.conf import settings
