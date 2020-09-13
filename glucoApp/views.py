@@ -56,7 +56,7 @@ def upload(request):
                 datainp3 = np.array(datainp3)
                 preds = model.predict([datainp1,datainp2,datainp3])
                 y_classes = preds.argmax(axis=-1) 
-                value=y_classes[0]
+                value=int(y_classes[0])
 
             except:
                 print("exception occur")
