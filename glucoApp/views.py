@@ -28,39 +28,34 @@ def upload(request):
 
     # check to see if this is a post request
     if request.method == "POST":
-        print(MODEL_PATH)
+        # print(MODEL_PATH)
         # check to see if an image was uploaded
         if request.FILES.get("image", None) is not None:
             # grab the uploaded image
 
             im = request.FILES["image"]
             try:
-                
+                model=load_model(MODEL_PATH)
                 datainp1=list()
-		datainp2=list()
-		datainp3=list()
-		inp=imageio.imread(im)
-		inp = cv2.resize(inp,(112, 112), interpolation = cv2.INTER_CUBIC)
-		#inp_rgb=resize(inp_rgb,224,224)
-		inp1=rgb2hsv(inp) 
-		inp2=rgb2lab(inp)
-		inp3=rgb2ycbcr(inp)
+                datainp2=list()
+                datainp3=list()
+                inp=imageio.imread(im)
+                inp = cv2.resize(inp,(112, 112), interpolation = cv2.INTER_CUBIC)
+                #inp_rgb=resize(inp_rgb,224,224)
+                inp1=rgb2hsv(inp) 
+                inp2=rgb2lab(inp)
+                inp3=rgb2ycbcr(inp)
 
-		datainp1.append(inp1)
-		datainp2.append(inp2)
-		datainp3.append(inp3)
+                datainp1.append(inp1)
+                datainp2.append(inp2)
+                datainp3.append(inp3)
 
-		datainp1 = np.array(datainp1)
-		datainp2 = np.array(datainp2)
-		datainp3 = np.array(datainp3)
-
-		preds = model.predict([datainp1,datainp2,datainp3])
-
-		y_classes = preds.argmax(axis=-1) 
-		value=y_classes[0]
-
-
-
+                datainp1 = np.array(datainp1)
+                datainp2 = np.array(datainp2)
+                datainp3 = np.array(datainp3)
+                preds = model.predict([datainp1,datainp2,datainp3])
+                y_classes = preds.argmax(axis=-1) 
+                value=y_classes[0]
 
             except:
                 print("exception occur")
